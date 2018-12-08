@@ -26,6 +26,7 @@ public class Producer {
 
             //3 根据连接创建channel
             channel = connection.createChannel();
+            AMQP.Confirm.SelectOk selectOk = channel.confirmSelect();
 
             Map<String, Object> headers = new HashMap<>();
             headers.put("msg1", "message1");
