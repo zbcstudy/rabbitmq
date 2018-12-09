@@ -3,6 +3,7 @@ package com.wondertek.study.rabbitmq.spring;
 import com.wondertek.study.rabbitmq.spring.entity.Order;
 import com.wondertek.study.rabbitmq.spring.entity.Packaged;
 
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -45,5 +46,9 @@ public class MessageDelegate {
 
     public void consumerMessage(Packaged packaged) {
         System.out.println("Packaged类型处理方法，消息内容：" + packaged);
+    }
+
+    public void consumerMessage(File file) {
+        System.out.println("文件对象方法，消息内容：" + file.getName());
     }
 }

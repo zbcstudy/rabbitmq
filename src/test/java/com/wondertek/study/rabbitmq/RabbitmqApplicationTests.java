@@ -14,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 @RunWith(SpringRunner.class)
@@ -135,6 +139,39 @@ public class RabbitmqApplicationTests {
 			rabbitTemplate.convertAndSend("topic001","spring.packaged",message2);
 
 		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 测试发送图片或PDF格式的消息
+	 */
+	@Test
+	public void testSendExtMessageConverter() {
+
+		//测试图片
+		/*try {
+			byte[] bytes = Files.readAllBytes(Paths.get("D:\\11\\yuanshi\\4.0大纲1.jpg"));
+			MessageProperties properties = new MessageProperties();
+			properties.setContentType("image/png");
+			properties.getHeaders().put("extName", "jpg");
+			Message message = new Message(bytes, properties);
+			rabbitTemplate.convertAndSend("topic001", "spring.image", message);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
+
+		//测试PDF
+		try {
+			byte[] bytes = Files.readAllBytes(Paths.get("D:\\11\\yuanshi\\usingthymeleaf.pdf"));
+			MessageProperties properties = new MessageProperties();
+			properties.setContentType("application/pdf");
+			properties.getHeaders().put("extName", "jpg");
+			Message message = new Message(bytes, properties);
+			rabbitTemplate.convertAndSend("topic001", "spring.pdf", message);
+
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
