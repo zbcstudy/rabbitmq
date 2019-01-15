@@ -1,9 +1,13 @@
 package com.wondertek.study.rabbitmq.springboot;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wondertek.study.rabbitmq.springboot.entity.Order;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.support.CorrelationData;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
@@ -47,13 +51,21 @@ public class Producer {
      * 发送一个Java对象
      * @param order
      */
-    public void sendOrder(Order order) {
+    public void sendOrder(Order order) throws JsonProcessingException {
         rabbitTemplate.setConfirmCallback(confirmCallback);
 
         rabbitTemplate.setReturnCallback(returnCallback);
+        rabbitTemplate.setMessageConverter(converter());
         CorrelationData correlationData = new CorrelationData("1234567890");
-        rabbitTemplate.convertAndSend("topic002", "springboot.order", order, correlationData);
+        ObjectMapper mapper = new ObjectMapper();
+        String value = mapper.writeValueAsString(order);
+        rabbitTemplate.convertAndSend("topic002", "springboot.order", value, correlationData);
 
+    }
+
+    @Bean
+    public Jackson2JsonMessageConverter converter() {
+        return new Jackson2JsonMessageConverter();
     }
 
 }

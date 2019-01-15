@@ -1,9 +1,14 @@
 package com.wondertek.study.rabbitmq.springboot.entity;
 
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 
+@Component
 public class Order implements Serializable {
 
+    private static final long serialVersionUID = -2760374373188976445L;
     private String id;
     private String name;
     private String content;

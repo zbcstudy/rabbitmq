@@ -22,3 +22,15 @@ vim /usr/lib/rabbitmq/lib/rabbitmq_server-3.6.5/ebin/rabbit.app
 
 管理插件：rabbitmq-plugins enable rabbitmq_management
 访问地址：http://192.168.11.76:15672/
+
+
+rabbitmq 集群架构模式
+主备模式 并发和数据量不高的情况下
+
+远程模式 ：shovel
+    启用插件：rabbitmq-plugins enable amqp-client
+             rabbitmq-plugins enable rabbitmq_shovel
+             
+镜像模式
+
+多活模式：插件--federation

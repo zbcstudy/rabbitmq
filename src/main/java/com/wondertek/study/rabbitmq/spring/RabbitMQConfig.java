@@ -127,7 +127,7 @@ public class RabbitMQConfig {
         container.setMessageListener(adapter3);*/
 
         //1.4 ext converter
-        MessageListenerAdapter adapter4 = new MessageListenerAdapter(new MessageDelegate());
+        /*MessageListenerAdapter adapter4 = new MessageListenerAdapter(new MessageDelegate());
         //设置适配器默认的监听方法
         adapter4.setDefaultListenerMethod("consumerMessage");
         ContentTypeDelegatingMessageConverter converter = new ContentTypeDelegatingMessageConverter();
@@ -149,7 +149,7 @@ public class RabbitMQConfig {
         PDFMessageConverter pdfMessageConverter = new PDFMessageConverter();
         converter.addDelegate("application/pdf", pdfMessageConverter);
         adapter4.setMessageConverter(converter);
-        container.setMessageListener(adapter4);
+        container.setMessageListener(adapter4);*/
         return container;
     }
 

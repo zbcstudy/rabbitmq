@@ -1,5 +1,6 @@
 package com.wondertek.study.rabbitmq.springboot;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
 import com.wondertek.study.rabbitmq.springboot.entity.Order;
 import org.springframework.amqp.rabbit.annotation.*;
@@ -59,10 +60,18 @@ public class Consumer {
             key = "${spring.rabbitmq.listener.order.key}"
     ))
     @RabbitHandler
-    public void consumerOrderMessage(@Payload Order order, Channel channel,
+    public void consumerOrderMessage(Message message, Channel channel,
                                      @Headers Map<String, Object> headers) {
         System.out.println("--------------消费端-------------");
-        System.out.println("获取到order对象id：" + order.getId());
+        Object payload = message.getPayload();
+        ObjectMapper mapper = new ObjectMapper();
+        Order order = null;
+        try {
+            order = mapper.readValue(payload.toString(), Order.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("orderId---" + order.getId());
         Long delevery_tag = (Long) headers.get(AmqpHeaders.DELIVERY_TAG);
         try {
             channel.basicAck(delevery_tag,false);

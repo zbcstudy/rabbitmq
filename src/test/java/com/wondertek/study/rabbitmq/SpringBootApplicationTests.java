@@ -1,5 +1,7 @@
 package com.wondertek.study.rabbitmq;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wondertek.study.rabbitmq.springboot.entity.Order;
 import com.wondertek.study.rabbitmq.springboot.Producer;
 import org.junit.Test;
@@ -27,7 +29,7 @@ public class SpringBootApplicationTests {
     }
 
     @Test
-    public void testSendOrderMessage() {
+    public void testSendOrderMessage() throws JsonProcessingException {
 
         Order order = new Order("2", "name2", "content2");
         producer.sendOrder(order);
