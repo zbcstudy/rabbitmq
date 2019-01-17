@@ -60,17 +60,9 @@ public class Consumer {
             key = "${spring.rabbitmq.listener.order.key}"
     ))
     @RabbitHandler
-    public void consumerOrderMessage(Message message, Channel channel,
+    public void consumerOrderMessage(@Payload Order order, Message message, Channel channel,
                                      @Headers Map<String, Object> headers) {
         System.out.println("--------------消费端-------------");
-        Object payload = message.getPayload();
-        ObjectMapper mapper = new ObjectMapper();
-        Order order = null;
-        try {
-            order = mapper.readValue(payload.toString(), Order.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         System.out.println("orderId---" + order.getId());
         Long delevery_tag = (Long) headers.get(AmqpHeaders.DELIVERY_TAG);
         try {

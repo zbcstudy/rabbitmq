@@ -53,19 +53,11 @@ public class Producer {
      */
     public void sendOrder(Order order) throws JsonProcessingException {
         rabbitTemplate.setConfirmCallback(confirmCallback);
-
         rabbitTemplate.setReturnCallback(returnCallback);
-        rabbitTemplate.setMessageConverter(converter());
         CorrelationData correlationData = new CorrelationData("1234567890");
-        ObjectMapper mapper = new ObjectMapper();
-        String value = mapper.writeValueAsString(order);
-        rabbitTemplate.convertAndSend("topic002", "springboot.order", value, correlationData);
+        rabbitTemplate.convertAndSend("topic002", "springboot.order", order, correlationData);
 
     }
 
-    @Bean
-    public Jackson2JsonMessageConverter converter() {
-        return new Jackson2JsonMessageConverter();
-    }
 
 }
